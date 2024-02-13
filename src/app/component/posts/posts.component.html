@@ -1,0 +1,46 @@
+<div class="container">
+    <mat-form-field class="example-full-width p-2">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filtra per titolo">
+    </mat-form-field>
+    <div *ngFor="let post of paginatedPosts">
+      <div class="d-flex align-items-center p-1">
+        <button class="button" mat-raised-button color="warn" (click)="openInfoPost(modalInfoPost, post.id)">{{ getUserInitials(post.userId) }}</button>
+        <div class="p-2">
+          <h1 class="color-red" style="font-size: 2rem;">{{post.title}}</h1>
+          <p style="font-size: 0.75rem;">pubblicato da: <u class="color-red btn" style="cursor: pointer;" (click)="openInfoUser(modalInfoUser, post.userId)">{{getUser(post.userId)?.username}}</u></p>
+        </div>
+      </div>
+      <hr class="dividor">
+    </div>
+    
+    <mat-paginator [length]="filteredPosts.length" [pageSizeOptions]="[5,10,20]" (page)="onPageChange($event)"></mat-paginator>
+  </div>
+  
+<!-- Info post Modal -->
+<ng-template #modalInfoPost>
+    <h4 style="font-size: 1rem;" mat-dialog-title>post pubblicato da: {{getUser(selectedPost.userId)?.name}} <span class="color-red">{{getUser(selectedPost.userId)?.username}}</span></h4>
+    <mat-dialog-content>
+        <h1 class="color-red">{{selectedPost.title}}</h1>
+        <p>{{selectedPost.body}}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="warn" mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+</ng-template>   
+
+<!-- Info user Modal -->
+<ng-template #modalInfoUser>
+    <h4 style="font-size: 1rem;" mat-dialog-title>{{selectedUser.name}}</h4>
+    <mat-dialog-content>
+        <p>username: {{selectedUser.username}}</p>
+        <p>email: {{selectedUser.email}}</p>
+        <p>phone: {{selectedUser.phone}}</p>
+        <p>webssite: {{selectedUser.website}}</p>
+        <p>city: {{selectedUser.address.city}}</p>
+        <p>company: {{selectedUser.company.name}}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="warn" mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+</ng-template>  
